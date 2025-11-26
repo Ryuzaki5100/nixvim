@@ -15,7 +15,7 @@
 
       open_mapping = "[[<c-\\>]]";
 
-      shell = "nix develop github:Ryuzaki5100/nixvim-dynamic -c $SHELL";
+      shell = "nix develop github:Ryuzaki5100/nixvim -c $SHELL";
 
       # If you ever want the ultra-short local version instead, just comment the line above
       # and uncomment this one:
