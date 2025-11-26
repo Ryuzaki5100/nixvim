@@ -27,7 +27,7 @@
   };
 
   plugins.treesitter-context.enable = true;
-  plugins.treesitter-refactor = {
+  plugins.treesitter-refactor.settings = {
     enable = true;
     highlightDefinitions.enable = true;
     smartRename.enable = true;

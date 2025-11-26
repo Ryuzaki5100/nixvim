@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   plugins = {
     cmp = {
       enable = true;
@@ -9,15 +10,18 @@
 
         sources = [
           { name = "nvim_lsp"; }
-          { name = "luasnip"; priority = 1000; }
+          {
+            name = "luasnip";
+            priority = 1000;
+          }
           { name = "path"; }
           { name = "buffer"; }
         ];
 
         mapping = {
           "<C-Space>" = "cmp.mapping.complete()";
-          "<CR>"      = "cmp.mapping.confirm({ select = true })";
-          "<C-e>"     = "cmp.mapping.abort()";
+          "<CR>" = "cmp.mapping.confirm({ select = true })";
+          "<C-e>" = "cmp.mapping.abort()";
 
           "<Tab>" = /* lua */ ''
             function(fallback)
@@ -56,10 +60,14 @@
     luasnip.enable = true;
     friendly-snippets.enable = true;
 
-    lspkind = {
-      enable = true;
-      symbolMap = { Copilot = "?"; };
-      extraOptions = { maxwidth = 50; };
+    lspkind.enable = true;
+    lspkind.settings = {
+      symbolMap = {
+        Copilot = "?";
+      };
+      extraOptions = {
+        maxwidth = 50;
+      };
     };
   };
 }

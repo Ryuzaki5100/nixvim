@@ -38,10 +38,10 @@
       };
     };
 
-    lspsaga = {
-      enable = true;
+    lspsaga.enable = true;
+    lspsaga.settings = {
       beacon.enable = true;
-      symbolInWinbar.enable = true;
+      symbol_in_winbar.enable = true;
       lightbulb.enable = true;
     };
 

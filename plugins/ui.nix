@@ -4,12 +4,13 @@
   plugins = {
     lualine.enable = true;
 
-    neo-tree = {
-      enable = true;
-      closeIfLastWindow = true;
-      popupBorderStyle = "rounded";
-      enableGitStatus = true;
-      enableDiagnostics = true;
+    neo-tree.enable = true;
+
+    neo-tree.settings = {
+      close_if_last_window = true;
+      popup_border_style = "rounded";
+      enable_git_status = true;
+      enable_diagnostics = true;
     };
 
     which-key.enable = true;
