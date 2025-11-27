@@ -96,7 +96,7 @@
           devShells.default = pkgs.mkShell {
             buildInputs = [ nvim ] ++ lspTools;
             shellHook = ''
-              echo "Greetings Ryuzaki! Your IDE has been setup!"
+              echo "Greetings Boss!"
               alias vim=nvim
               alias vi=nvim
             '';
