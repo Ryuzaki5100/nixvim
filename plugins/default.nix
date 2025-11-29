@@ -1,5 +1,4 @@
-{ ... }:
-{
+{ ... }: {
   imports = [
     ./indentation.nix
     ./completion.nix
@@ -11,6 +10,5 @@
     ./ui.nix
     ./terminal.nix
     ./HtmlPeek.nix
-    ./uicycle.nix
   ];
 }
