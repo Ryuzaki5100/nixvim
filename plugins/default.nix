@@ -1,6 +1,7 @@
 { ... }:
 {
   imports = [
+    ./indentation.nix
     ./completion.nix
     ./dap.nix
     ./java.nix

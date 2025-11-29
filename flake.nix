@@ -63,6 +63,8 @@
             nodePackages.vscode-langservers-extracted
             nodejs
 
+            ripgrep
+
             # Lua, Nix, Markdown, etc.
             lua-language-server
             stylua
@@ -96,7 +98,7 @@
           devShells.default = pkgs.mkShell {
             buildInputs = [ nvim ] ++ lspTools;
             shellHook = ''
-              echo "Greetings Boss!"
+              echo "Greetings Ryuzaki! Your IDE has been setup!"
               alias vim=nvim
               alias vi=nvim
             '';

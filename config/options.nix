@@ -23,6 +23,8 @@
     cursorline = true;
     termguicolors = true;
     mouse = "a";
+    autoindent = true;
+    smartindent = true;
 
     # any other vim.opt you like
   };

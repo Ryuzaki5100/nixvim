@@ -16,8 +16,18 @@
     which-key.enable = true;
     noice.enable = true;
     notify.enable = true;
-    indent-blankline.enable = true;
+
     gitsigns.enable = true;
+
+    indent-blankline = {
+      enable = true;
+      settings = {
+        scope = {
+          enabled = true;
+          show_start = true;
+        };
+      };
+    };
   };
 
   colorschemes.gruvbox-material = {
