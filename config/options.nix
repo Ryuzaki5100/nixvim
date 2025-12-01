@@ -25,6 +25,7 @@
     mouse = "a";
     autoindent = true;
     smartindent = true;
+    guicursor = "n-v-c:block,i:ver25";
 
     # any other vim.opt you like
   };
