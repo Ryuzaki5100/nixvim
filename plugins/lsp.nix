@@ -17,6 +17,11 @@
         jsonls.enable = true;
         yamlls.enable = true;
         taplo.enable = true; # TOML
+        rust_analyzer = {
+          enable = true;
+          installRustc = true;
+          installCargo = true;
+        };
       };
 
       keymaps = {
