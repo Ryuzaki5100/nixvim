@@ -9,7 +9,7 @@
         cssls.enable = true;
         ts_query_ls.enable = true;
         gopls.enable = true;
-        clangd.enable = true;
+        ccls.enable = true;
         jdtls.enable = true;
         marksman.enable = true; # Markdown
         nil_ls.enable = true; # Nix
