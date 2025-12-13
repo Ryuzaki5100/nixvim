@@ -1,5 +1,4 @@
-{ ... }:
-{
+{ ... }: {
   plugins = {
     lsp = {
       enable = true;
@@ -9,7 +8,7 @@
         cssls.enable = true;
         ts_query_ls.enable = true;
         gopls.enable = true;
-        ccls.enable = true;
+        clangd.enable = true;
         jdtls.enable = true;
         marksman.enable = true; # Markdown
         nil_ls.enable = true; # Nix
