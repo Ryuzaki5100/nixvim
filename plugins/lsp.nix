@@ -1,4 +1,4 @@
-{ ... }: {
+{ pkgs, ... }: {
   plugins = {
     lsp = {
       enable = true;
@@ -8,7 +8,14 @@
         cssls.enable = true;
         ts_query_ls.enable = true;
         gopls.enable = true;
-        clangd.enable = true;
+        clangd = {
+          enable = true;
+          extraOptions.fallbackFlags = [
+            "-I${pkgs.llvmPackages_18.libclang.lib}/lib/clang/18/include"
+            "-I${pkgs.gcc.cc.lib}/include/c++/${pkgs.gcc.cc.version}"
+            "-I${pkgs.gcc.cc.lib}/include/c++/${pkgs.gcc.cc.version}/x86_64-unknown-linux-gnu"
+          ];
+        };
         jdtls.enable = true;
         marksman.enable = true; # Markdown
         nil_ls.enable = true; # Nix
