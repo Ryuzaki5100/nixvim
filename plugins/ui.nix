@@ -7,6 +7,14 @@
   plugins = {
     lualine.enable = true;
 
+    lualine.settings = {
+      options = {
+        theme = "auto"; # follow whatever :colorscheme sets
+        section_separators = "";
+        component_separators = "";
+      };
+    };
+
     neo-tree.enable = true;
 
     neo-tree.settings = {

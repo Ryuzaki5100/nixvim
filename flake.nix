@@ -69,7 +69,9 @@
             lua-language-server
             stylua
             nil
-            nixfmt-rfc-style
+            # evaluation warning: nixfmt-rfc-style is now the same as pkgs.nixfmt which should be used instead.
+            # nixfmt-rfc-style
+            nixfmt
             marksman
             taplo
             yaml-language-server

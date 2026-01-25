@@ -2,7 +2,9 @@
 {
   plugins.treesitter = {
     enable = true;
-    folding = true;
+    folding = {
+      enable = true;
+    };
     settings.autoindent = true;
     settings.copyindent = true;
     settings.preserveindent = true;
