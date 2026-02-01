@@ -38,6 +38,7 @@
             cmake
             gdb
             lldb
+            pkgs.gcc-arm-embedded
 
             # Java
             jdk21
@@ -64,6 +65,7 @@
             nodejs
 
             ripgrep
+            bear
 
             # Lua, Nix, Markdown, etc.
             lua-language-server
@@ -103,6 +105,10 @@
               echo "Greetings Boss"
               alias vim=nvim
               alias vi=nvim
+              export CC="arm-none-eabi-gcc"
+              export CXX="arm-none-eabi-g++"
+              export AR="arm-none-eabi-ar"
+              export LD="arm-none-eabi-ld"
             '';
           };
         };
