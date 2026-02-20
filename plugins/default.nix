@@ -1,4 +1,5 @@
-{ ... }: {
+{ ... }:
+{
   imports = [
     ./indentation.nix
     ./completion.nix
@@ -10,5 +11,7 @@
     ./ui.nix
     ./terminal.nix
     ./HtmlPeek.nix
+    ./copilot.nix
+    ./codecompanion.nix
   ];
 }

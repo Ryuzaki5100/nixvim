@@ -2,7 +2,7 @@
 { lib, ... }:
 {
   # Force the default colorscheme so it wins over modules that set the option themselves
-  colorscheme = lib.mkForce "gruvbox-material";
+  colorscheme = lib.mkForce "kanagawa-dragon";
 
   plugins = {
     lualine.enable = true;
