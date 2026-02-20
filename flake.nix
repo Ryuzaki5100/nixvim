@@ -77,6 +77,9 @@
             marksman
             taplo
             yaml-language-server
+
+            # gemini-cli
+            gemini-cli
           ];
 
           nixvimModule = {
