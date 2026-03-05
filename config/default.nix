@@ -1,4 +1,8 @@
-{pkgs, lspTools ? [], ... }:
+{
+  pkgs,
+  lspTools ? [ ],
+  ...
+}:
 {
   extraPackages = lspTools;
   # Import all your configuration modules here
@@ -7,5 +11,6 @@
     ./bufferline.nix
     ./options.nix
     ./keymaps.nix
+    ./custom-key-bindings.nix
   ];
 }
