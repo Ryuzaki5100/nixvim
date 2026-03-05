@@ -1,16 +1,6 @@
 {
   keymaps = [
     # My Custom Key-Bindings
-    # Exiting out of insert mode using jk
-    {
-      key = "jk";
-      action = "<Esc>";
-      mode = "i";
-      options = {
-        silent = true;
-        desc = "Escape to Normal Mode";
-      };
-    }
     {
       key = "jl";
       action = "<Esc>:";
@@ -24,6 +14,7 @@
       action = "<Esc>:w<CR>";
       mode = "i";
       options = {
+        silent = true;
         desc = "Save File from Insert Mode";
       };
     }
