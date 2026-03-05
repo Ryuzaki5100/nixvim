@@ -6,6 +6,18 @@
       key = "jk";
       action = "<Esc>";
       mode = "i";
+      options = {
+        silent = true;
+        desc = "Escape to Normal Mode";
+      };
+    }
+    {
+      key = "jl";
+      action = "<Esc>:";
+      mode = "i";
+      options = {
+        desc = "Enter Command-line Mode from Insert Mode";
+      };
     }
   ];
 }
