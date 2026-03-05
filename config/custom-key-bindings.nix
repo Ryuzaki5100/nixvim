@@ -21,7 +21,7 @@
     }
     {
       key = "kj";
-      action = "<Esc>:w";
+      action = "<Esc>:w<CR>";
       mode = "i";
       options = {
         desc = "Save File from Insert Mode";
