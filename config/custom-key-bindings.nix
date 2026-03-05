@@ -19,5 +19,14 @@
         desc = "Enter Command-line Mode from Insert Mode";
       };
     }
+    {
+      key = "kj";
+      action = "<Esc>:w";
+      mode = "i";
+      options = {
+        desc = "Save File from Insert Mode";
+      };
+    }
+
   ];
 }
