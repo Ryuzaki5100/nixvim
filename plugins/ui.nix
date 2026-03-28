@@ -2,6 +2,7 @@
 { lib, ... }:
 {
   # Force the default colorscheme so it wins over modules that set the option themselves
+  # colorscheme = lib.mkForce "gruvbox";
   colorscheme = lib.mkForce "kanagawa-dragon";
 
   plugins = {

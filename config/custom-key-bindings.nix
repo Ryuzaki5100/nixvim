@@ -18,6 +18,15 @@
         desc = "Save File from Insert Mode";
       };
     }
+    {
+      key = "jk";
+      action = "<Esc>";
+      mode = "i";
+      options = {
+        silent = true;
+        desc = "Enter Normal Mode from Insert Mode";
+      };
+    }
 
   ];
 }
