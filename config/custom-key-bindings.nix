@@ -27,6 +27,13 @@
         desc = "Enter Normal Mode from Insert Mode";
       };
     }
-
+    {
+      key = "<leader>h";
+      action = "<Esc>:Neotree<CR>";
+      mode = "n";
+      options = {
+        desc = "Toggle File Explorer";
+      };
+    }
   ];
 }

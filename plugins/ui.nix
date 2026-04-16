@@ -3,7 +3,9 @@
 {
   # Force the default colorscheme so it wins over modules that set the option themselves
   # colorscheme = lib.mkForce "gruvbox";
-  colorscheme = lib.mkForce "kanagawa-dragon";
+  # colorscheme = lib.mkForce "kanagawa-dragon";
+  # colorscheme = lib.mkForce "base16-vesper";
+  colorscheme = lib.mkForce "base16-darkviolet";
 
   plugins = {
     lualine.enable = true;
