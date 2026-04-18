@@ -35,5 +35,13 @@
         desc = "Toggle File Explorer";
       };
     }
+    {
+      key = "<leader>b";
+      action = "<Esc>:color ";
+      mode = "n";
+      options = {
+        desc = "Change Background color";
+      };
+    }
   ];
 }
