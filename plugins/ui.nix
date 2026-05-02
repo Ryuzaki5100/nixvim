@@ -2,10 +2,47 @@
 { lib, ... }:
 {
   # Force the default colorscheme so it wins over modules that set the option themselves
-  # colorscheme = lib.mkForce "gruvbox";
-  # colorscheme = lib.mkForce "kanagawa-dragon";
-  # colorscheme = lib.mkForce "base16-vesper";
-  colorscheme = lib.mkForce "base16-darkviolet";
+  colorscheme = lib.mkForce "base16-vesper";
+
+  # Read colors.toml dynamically from omarchy at runtime to generate a colorscheme before plugins load
+  extraConfigLua = ''
+    local theme_file = vim.fn.expand("~/.config/omarchy/current/theme/colors.toml")
+    local f = io.open(theme_file, "r")
+    if f then
+      local term_colors = {}
+      for line in f:lines() do
+        local k, v = line:match("([%w_]+)%s*=%s*\"(#%w+)\"")
+        if k and v then
+          term_colors[k] = v
+        end
+      end
+      f:close()
+
+      if term_colors.background then
+        local b16 = {
+          base00 = term_colors.background,
+          base01 = term_colors.color0 or term_colors.background,
+          base02 = term_colors.selection_background or term_colors.color8,
+          base03 = term_colors.color8,
+          base04 = term_colors.color7,
+          base05 = term_colors.foreground or term_colors.color7,
+          base06 = term_colors.color15,
+          base07 = term_colors.color15,
+          base08 = term_colors.color1,
+          base09 = term_colors.color3,
+          base0A = term_colors.color3,
+          base0B = term_colors.color2,
+          base0C = term_colors.color6,
+          base0D = term_colors.color4,
+          base0E = term_colors.color5,
+          base0F = term_colors.color5
+        }
+        pcall(function()
+          require("base16-colorscheme").setup(b16)
+        end)
+      end
+    end
+  '';
 
   plugins = {
     lualine.enable = true;
