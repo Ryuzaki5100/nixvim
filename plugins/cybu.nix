@@ -11,6 +11,12 @@
         style = {
           border = "rounded";
           padding = 5;
+          highlights = {
+            current_buffer = "CybuFocus";
+            adjacent_buffers = "CybuAdjacent";
+            background = "CybuBackground";
+            border = "CybuBorder";
+          };
         };
         behaviour = {
           mode = {
@@ -20,7 +26,7 @@
           };
           show_on_autocmd = true;
         };
-        display_time = 275;
+        display_time = 400;
       };
     };
   };
