@@ -13,5 +13,6 @@
     ./HtmlPeek.nix
     ./copilot.nix
     ./codecompanion.nix
+    ./cybu.nix
   ];
 }

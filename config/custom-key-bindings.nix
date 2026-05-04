@@ -32,6 +32,7 @@
       action = "<Esc>:Neotree<CR>";
       mode = "n";
       options = {
+        silent = true;
         desc = "Toggle File Explorer";
       };
     }
@@ -41,6 +42,24 @@
       mode = "n";
       options = {
         desc = "Change Base16 Background color";
+      };
+    }
+    {
+      key = "<Tab>";
+      action = ":CybuLastusedNext<CR>";
+      mode = "n";
+      options = {
+        silent = true;
+        desc = "Go to next buffer";
+      };
+    }
+    {
+      key = "<S-Tab>";
+      action = ":CybuLastusedPrev<CR>";
+      mode = "n";
+      options = {
+        silent = true;
+        desc = "Go to previous buffer";
       };
     }
   ];
