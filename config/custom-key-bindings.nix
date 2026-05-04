@@ -37,10 +37,10 @@
     }
     {
       key = "<leader>b";
-      action = "<Esc>:color ";
+      action = "<Esc>:color base16-";
       mode = "n";
       options = {
-        desc = "Change Background color";
+        desc = "Change Base16 Background color";
       };
     }
   ];
