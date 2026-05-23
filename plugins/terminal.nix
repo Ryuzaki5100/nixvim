@@ -13,7 +13,7 @@
         width = 130;
       };
 
-      open_mapping = "[[<c-\\>]]";
+      open_mapping = "[[<m-x>]]";
 
       shell = "nix develop github:Ryuzaki5100/nixvim -c $SHELL";
 
