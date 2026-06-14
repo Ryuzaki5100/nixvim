@@ -62,5 +62,23 @@
         desc = "Go to previous buffer";
       };
     }
+    {
+      key = "H";
+      action = "^";
+      mode = "n";
+      options = {
+        silent = true;
+        desc = "Go to first character of a line";
+      };
+    }
+    {
+      key = "L";
+      action = "$";
+      mode = "n";
+      options = {
+        silent = true;
+        desc = "Go to last character of a line";
+      };
+    }
   ];
 }
