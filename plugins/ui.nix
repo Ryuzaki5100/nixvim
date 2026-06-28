@@ -6,7 +6,8 @@
   # colorscheme = lib.mkForce "kanagawa-dragon";
   # colorscheme = lib.mkForce "base16-vesper";
   # colorscheme = lib.mkForce "base16-darkviolet";
-  colorscheme = lib.mkForce "base16-rose-pine";
+  # colorscheme = lib.mkForce "base16-rose-pine";
+  colorscheme = lib.mkForce "base16-black-metal-gorgoroth";
 
   plugins = {
     lualine.enable = true;
