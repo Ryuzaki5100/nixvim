@@ -13,6 +13,7 @@
     ./HtmlPeek.nix
     ./copilot.nix
     ./codecompanion.nix
+    ./opencode.nix
     ./cybu.nix
   ];
 }

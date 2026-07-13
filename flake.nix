@@ -80,6 +80,9 @@
 
             # gemini-cli
             gemini-cli
+
+            # OpenCode AI assistant
+            opencode
           ];
 
           nixvimModule = {
