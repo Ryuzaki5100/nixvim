@@ -24,8 +24,12 @@
       ];
 
       perSystem =
-        { system, pkgs, ... }:
+        { system, ... }:
         let
+          pkgs = import inputs.nixpkgs {
+            inherit system;
+            config.allowUnfree = true;
+          };
           nixvimLib = nixvim.lib.${system};
           nixvim' = nixvim.legacyPackages.${system};
 
@@ -60,8 +64,8 @@
             go
 
             # Node / JS/TS
-            nodePackages.typescript-language-server
-            nodePackages.vscode-langservers-extracted
+            typescript-language-server
+            vscode-langservers-extracted
             nodejs
 
             ripgrep
