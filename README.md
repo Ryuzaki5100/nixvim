@@ -50,7 +50,7 @@ nix run github:Ryuzaki5100/nixvim
 - **UI** — `lualine` statusline, `neo-tree` file explorer, `which-key` popups, `noice` cmdline, `notify` notifications, `gitsigns`, `indent-blankline`, and `trouble` diagnostics.
 - **Buffer Management** — `cybu` for MRU-based tab switching (`<Tab>` / `<S-Tab>`), `bufferline`.
 - **Terminal** — `toggleterm` with floating window (toggle via `<M-x>`).
-- **Markdown** — `peek` HTML preview in Firefox.
+- **Markdown** — `render-markdown.nvim` for rendered Markdown preview, `peek` HTML preview in Firefox.
 
 ### Themes
 
@@ -116,7 +116,8 @@ vi     # → nvim
 │   ├── opencode.nix           # OpenCode AI assistant
 │   ├── cybu.nix               # MRU buffer switcher
 │   ├── indentation.nix        # nvim-autopairs
-│   └── HtmlPeek.nix           # Markdown preview in Firefox
+│   ├── HtmlPeek.nix           # Markdown preview in Firefox
+│   └── render-markdown.nix    # Rendered Markdown preview
 └── README.md
 ```
 

@@ -15,5 +15,6 @@
     ./codecompanion.nix
     ./opencode.nix
     ./cybu.nix
+    ./render-markdown.nix
   ];
 }
