@@ -28,6 +28,22 @@
       };
     }
     {
+      key = "jk";
+      action = "<C-\\><C-n>";
+      mode = "t";
+      options = {
+        desc = "Exit Terminal Mode";
+      };
+    }
+    {
+      key = "jl";
+      action = "<C-\\><C-n>:";
+      mode = "t";
+      options = {
+        desc = "Open Command-line";
+      };
+    }
+    {
       key = "<leader>h";
       action = "<Esc>:Neotree<CR>";
       mode = "n";
