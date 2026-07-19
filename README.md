@@ -35,6 +35,8 @@ nix run github:Ryuzaki5100/nixvim
 | **Bash** | `bashls` | — | — |
 | **HTML / CSS** | `html`, `cssls` | — | — |
 
+> **Python venv**: pyright is configured to auto-detect a local `./venv/` — no need to manually set the interpreter.
+
 ### AI Assistants
 
 - **[OpenCode](https://opencode.ai)** — inline AI coding assistant with smart prompts for ask, explain, fix, review, test, document, optimize, and implement.
@@ -198,6 +200,8 @@ vi     # → nvim
 | `<leader>os` | Select OpenCode prompt |
 | `go` (operator) | Append range to OpenCode |
 | `goo` | Append line to OpenCode |
+| `<S-C-u>` | Scroll OpenCode output up |
+| `<S-C-d>` | Scroll OpenCode output down |
 
 ### Java (jdtls)
 

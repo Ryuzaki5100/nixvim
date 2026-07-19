@@ -23,6 +23,17 @@
         jsonls.enable = true;
         yamlls.enable = true;
         taplo.enable = true; # TOML
+
+        pyright = {
+          enable = true;
+          settings = {
+            python = {
+              pythonPath = "./venv/bin/python";
+              venvPath = ".";
+            };
+          };
+        };
+
         rust_analyzer = {
           enable = true;
           installRustc = true;
