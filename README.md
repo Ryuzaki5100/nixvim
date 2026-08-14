@@ -60,7 +60,9 @@ nix run github:Ryuzaki5100/nixvim
 
 ayu, bamboo, base16, catppuccin, cyberdream, dracula, everforest, github-theme, gruvbox, kanagawa, melange, modus, monokai-pro, moonfly, nightfox, nord, onedark, oxocarbon, palette, poimandres, rose-pine, solarized-osaka, tokyonight, vague, vscode, and more.
 
-Default: `base16-black-metal-gorgoroth`.
+Default: `base16-embers`.
+
+A custom `system` colorscheme (transparent background, muted grays) is bundled as an `extraPlugin` and can be activated with `:colorscheme system`.
 
 ---
 
@@ -111,7 +113,8 @@ vi     # → nvim
 │   ├── dap.nix                # Debug adapter protocol
 │   ├── java.nix               # Java tooling (neotest, conform, jdtls extra)
 │   ├── jdtls.nix              # Java LSP (jdtls) with multi-JDK support
-│   ├── ui.nix                 # Colorschemes, lualine, neo-tree, which-key, noice, gitsigns
+│   ├── ui.nix                 # Colorschemes, custom "system" theme, lualine, neo-tree, gitsigns
+│   ├── system-colorscheme/    # Custom "system" colorscheme (colors/system.vim)
 │   ├── terminal.nix           # Toggleterm floating terminal
 │   ├── copilot.nix            # Copilot + copilot-chat
 │   ├── codecompanion.nix      # AI chat (Gemini + Mistral adapters)

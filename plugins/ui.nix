@@ -1,5 +1,9 @@
 # nixvim-config/plugins/ui.nix
-{ lib, ... }:
+{
+  lib,
+  pkgs,
+  ...
+}:
 {
   # Force the default colorscheme so it wins over modules that set the option themselves
   # colorscheme = lib.mkForce "gruvbox";
@@ -7,7 +11,17 @@
   # colorscheme = lib.mkForce "base16-vesper";
   # colorscheme = lib.mkForce "base16-darkviolet";
   # colorscheme = lib.mkForce "base16-rose-pine";
-  colorscheme = lib.mkForce "base16-black-metal-gorgoroth";
+  # colorscheme = lib.mkForce "base16-embers";
+  # colorscheme = lib.mkForce "system";
+  colorscheme = lib.mkForce "base16-embers";
+
+  extraPlugins = [
+    (pkgs.vimUtils.buildVimPlugin {
+      pname = "opencode-system";
+      version = "0.1.0";
+      src = ./system-colorscheme;
+    })
+  ];
 
   plugins = {
     lualine.enable = true;
