@@ -82,9 +82,6 @@
             taplo
             yaml-language-server
 
-            # gemini-cli
-            gemini-cli
-
             # OpenCode AI assistant
             opencode
           ];
