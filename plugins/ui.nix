@@ -46,6 +46,11 @@
     which-key.enable = true;
     noice.enable = true;
     notify.enable = true;
+    # Skip the build-time neovim require-check, which fails on some machines
+    # (e.g. WSL) because it runs headless nvim inside the build sandbox.
+    notify.package = pkgs.vimPlugins.nvim-notify.overrideAttrs (_: {
+      doCheck = false;
+    });
 
     gitsigns.enable = true;
 
