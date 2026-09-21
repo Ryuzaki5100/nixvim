@@ -60,9 +60,12 @@ nix run github:Ryuzaki5100/nixvim
 
 ayu, bamboo, base16, catppuccin, cyberdream, dracula, everforest, github-theme, gruvbox, kanagawa, melange, modus, monokai-pro, moonfly, nightfox, nord, onedark, oxocarbon, palette, poimandres, rose-pine, solarized-osaka, tokyonight, vague, vscode, and more.
 
-Default: `base16-embers`.
+Default: `system`.
 
-A custom `system` colorscheme (transparent background, muted grays) is bundled as an `extraPlugin` and can be activated with `:colorscheme system`.
+Two custom colorschemes are bundled as an `extraPlugin` and can be activated with `:colorscheme <name>`:
+
+- `system` — transparent background with muted grays.
+- `retro-orange` — amber/orange monochrome matching the Omarchy `retropc` theme (`:colorscheme retro-orange`).
 
 ---
 
@@ -113,8 +116,8 @@ vi     # → nvim
 │   ├── dap.nix                # Debug adapter protocol
 │   ├── java.nix               # Java tooling (neotest, conform, jdtls extra)
 │   ├── jdtls.nix              # Java LSP (jdtls) with multi-JDK support
-│   ├── ui.nix                 # Colorschemes, custom "system" theme, lualine, neo-tree, gitsigns
-│   ├── system-colorscheme/    # Custom "system" colorscheme (colors/system.vim)
+│   ├── ui.nix                 # Colorschemes, custom themes, lualine, neo-tree, gitsigns
+│   ├── system-colorscheme/    # Custom colorschemes (colors/system.vim, colors/retro-orange.vim)
 │   ├── terminal.nix           # Toggleterm floating terminal
 │   ├── copilot.nix            # Copilot + copilot-chat
 │   ├── codecompanion.nix      # AI chat (Gemini + Mistral adapters)

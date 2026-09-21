@@ -12,8 +12,8 @@
   # colorscheme = lib.mkForce "base16-darkviolet";
   # colorscheme = lib.mkForce "base16-rose-pine";
   # colorscheme = lib.mkForce "base16-embers";
-  # colorscheme = lib.mkForce "system";
-  colorscheme = lib.mkForce "base16-embers";
+  colorscheme = lib.mkForce "system";
+  # colorscheme = lib.mkForce "base16-embers";
 
   extraPlugins = [
     (pkgs.vimUtils.buildVimPlugin {
