@@ -60,12 +60,17 @@ nix run github:Ryuzaki5100/nixvim
 
 ayu, bamboo, base16, catppuccin, cyberdream, dracula, everforest, github-theme, gruvbox, kanagawa, melange, modus, monokai-pro, moonfly, nightfox, nord, onedark, oxocarbon, palette, poimandres, rose-pine, solarized-osaka, tokyonight, vague, vscode, and more.
 
-Default: `system`.
-
 Two custom colorschemes are bundled as an `extraPlugin` and can be activated with `:colorscheme <name>`:
 
-- `system` — transparent background with muted grays.
+- `system` — **follows the active Omarchy desktop theme**. At startup it reads the live palette from `~/.local/state/omarchy/current/theme/` (the Aether `colors.toml`, or `alacritty.toml` for older themes) and maps it onto Neovim highlights. A background watcher re-applies it automatically when you run `omarchy theme set`, so a running Neovim changes with the desktop — no restart and no per-theme configuration. Falls back to a neutral dark palette off-Omarchy.
 - `retro-orange` — amber/orange monochrome matching the Omarchy `retropc` theme (`:colorscheme retro-orange`).
+
+The default theme is selected at build time by the flake package you run:
+
+```bash
+nix run .          # retro-orange (default)
+nix run .#omarchy  # system — follows the active Omarchy desktop theme
+```
 
 ---
 
@@ -117,7 +122,7 @@ vi     # → nvim
 │   ├── java.nix               # Java tooling (neotest, conform, jdtls extra)
 │   ├── jdtls.nix              # Java LSP (jdtls) with multi-JDK support
 │   ├── ui.nix                 # Colorschemes, custom themes, lualine, neo-tree, gitsigns
-│   ├── system-colorscheme/    # Custom colorschemes (colors/system.vim, colors/retro-orange.vim)
+│   ├── system-colorscheme/    # Custom colorschemes (colors/*.vim) + Omarchy palette engine (lua/omarchy_theme/)
 │   ├── terminal.nix           # Toggleterm floating terminal
 │   ├── copilot.nix            # Copilot + copilot-chat
 │   ├── codecompanion.nix      # AI chat (Gemini + Mistral adapters)

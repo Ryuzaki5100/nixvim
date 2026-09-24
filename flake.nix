@@ -86,23 +86,32 @@
             opencode
           ];
 
-          nixvimModule = {
-            inherit pkgs; # ← give your config direct access to pkgs
-            module = {
-              _module.args.lspTools = lspTools; # ← pass the tools to your config module
-              imports = [ ./config ]; # ← import as a list (enables composition)
+          # Theme is a build-time choice: the default package ships retro-orange,
+          # the `omarchy` package ships the `system` colorscheme that tracks the
+          # active Omarchy desktop theme.
+          mkNixvimModule =
+            theme:
+            {
+              inherit pkgs; # ← give your config direct access to pkgs
+              module = {
+                _module.args.lspTools = lspTools; # ← pass the tools to your config module
+                _module.args.theme = theme; # ← select the colorscheme
+                imports = [ ./config ]; # ← import as a list (enables composition)
+              };
+              extraSpecialArgs = { inherit lspTools theme; }; # ← optional: also pass directly if needed
             };
-            extraSpecialArgs = { inherit lspTools; }; # ← optional: also pass directly if needed
-          };
 
-          nvim = nixvim'.makeNixvimWithModule nixvimModule;
+          mkNvim = theme: nixvim'.makeNixvimWithModule (mkNixvimModule theme);
+
+          nvim = mkNvim "retro-orange";
         in
         {
-          checks.default = nixvimLib.check.mkTestDerivationFromNixvimModule nixvimModule;
+          checks.default = nixvimLib.check.mkTestDerivationFromNixvimModule (mkNixvimModule "retro-orange");
 
           packages = {
-            default = nvim; # nix run . → opens your IDE
+            default = nvim; # nix run . → opens your IDE with retro-orange
             nvim = nvim; # also available as nix run .#nvim
+            omarchy = mkNvim "system"; # nix run .#omarchy → follows the Omarchy desktop theme
           };
 
           # Optional: `nix develop` drops you in a shell with everything + handy aliases

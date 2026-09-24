@@ -2,19 +2,15 @@
 {
   lib,
   pkgs,
+  theme ? "retro-orange",
   ...
 }:
 {
-  # Force the default colorscheme so it wins over modules that set the option themselves
-  # colorscheme = lib.mkForce "gruvbox";
-  # colorscheme = lib.mkForce "kanagawa-dragon";
-  # colorscheme = lib.mkForce "base16-vesper";
-  # colorscheme = lib.mkForce "base16-darkviolet";
-  # colorscheme = lib.mkForce "base16-rose-pine";
-  # colorscheme = lib.mkForce "base16-embers";
-  colorscheme = lib.mkForce "system";
-  # colorscheme = lib.mkForce "retro-orange";
-  # colorscheme = lib.mkForce "base16-embers";
+  # Force the default colorscheme so it wins over modules that set the option themselves.
+  # The theme is chosen at build time via the flake package (see flake.nix):
+  #   nix run .          -> retro-orange (default)
+  #   nix run .#omarchy  -> system (follows the Omarchy desktop theme)
+  colorscheme = lib.mkForce theme;
 
   extraPlugins = [
     (pkgs.vimUtils.buildVimPlugin {
