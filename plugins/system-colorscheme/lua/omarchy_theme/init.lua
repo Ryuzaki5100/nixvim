@@ -303,6 +303,33 @@ local function apply_highlights(c)
   hl("Directory", { fg = c.blue })
   hl("WildMenu", { fg = c.bg, bg = c.accent })
 
+  -- nvim-notify. Its defaults link NotifyBackground to Normal, which is
+  -- transparent here, so it would warn and fall back to pure black. Derive the
+  -- whole family from the palette so it is rebuilt on every theme change.
+  hl("NotifyBackground", { bg = c.lighter_bg })
+  hl("NotifyERRORBorder", { fg = c.red })
+  hl("NotifyWARNBorder", { fg = c.yellow })
+  hl("NotifyINFOBorder", { fg = c.green })
+  hl("NotifyDEBUGBorder", { fg = c.muted })
+  hl("NotifyTRACEBorder", { fg = c.magenta })
+  hl("NotifyERRORIcon", { fg = c.red })
+  hl("NotifyWARNIcon", { fg = c.yellow })
+  hl("NotifyINFOIcon", { fg = c.green })
+  hl("NotifyDEBUGIcon", { fg = c.muted })
+  hl("NotifyTRACEIcon", { fg = c.magenta })
+  hl("NotifyERRORTitle", { fg = c.red, bold = true })
+  hl("NotifyWARNTitle", { fg = c.yellow, bold = true })
+  hl("NotifyINFOTitle", { fg = c.green, bold = true })
+  hl("NotifyDEBUGTitle", { fg = c.muted, bold = true })
+  hl("NotifyTRACETitle", { fg = c.magenta, bold = true })
+  hl("NotifyERRORBody", { fg = c.fg })
+  hl("NotifyWARNBody", { fg = c.fg })
+  hl("NotifyINFOBody", { fg = c.fg })
+  hl("NotifyDEBUGBody", { fg = c.fg })
+  hl("NotifyTRACEBody", { fg = c.fg })
+  hl("NotifyLogTime", { fg = c.muted, italic = true })
+  hl("NotifyLogTitle", { fg = c.accent, bold = true })
+
   -- Diagnostics
   hl("DiagnosticError", { fg = c.red })
   hl("DiagnosticWarn", { fg = c.yellow })
