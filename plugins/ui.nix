@@ -18,6 +18,19 @@
       version = "0.1.0";
       src = ./system-colorscheme;
     })
+    # The colorscheme engine Omarchy itself uses (generated per theme from
+    # colors.toml). The `system` colorscheme drives it from the live palette
+    # so every highlight group matches the desktop theme.
+    (pkgs.vimUtils.buildVimPlugin {
+      pname = "aether-nvim";
+      version = "unstable-2026-06-30";
+      src = pkgs.fetchFromGitHub {
+        owner = "bjarneo";
+        repo = "aether.nvim";
+        rev = "02af9ba1ef9d6f136a6b20404d39f2a4e3857e16";
+        hash = "sha256-mRXbLlaaHKX/sgudunXsvEX4CjvbzVDFq9Tji/5bpHI=";
+      };
+    })
   ];
 
   plugins = {

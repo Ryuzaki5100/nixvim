@@ -1,7 +1,13 @@
 -- Omarchy-aware colorscheme engine for the "system" theme.
 --
--- Reads the active Omarchy palette from the current theme and maps it onto
--- Neovim highlight groups. Newer (Aether) themes expose a flat
+-- Reads the active Omarchy palette from the current theme and feeds it to
+-- aether.nvim -- the same engine Omarchy generates its Neovim theme from --
+-- so every highlight group (syntax, treesitter, LSP, and the plugin
+-- integrations: neo-tree, noice, gitsigns, indent-blankline, telescope,
+-- which-key, ...) matches the desktop theme instead of falling back to
+-- Neovim's stock colours.
+--
+-- Newer (Aether) themes expose a flat
 --   ~/.local/state/omarchy/current/theme/colors.toml
 -- while older themes only ship an Alacritty palette
 --   ~/.local/state/omarchy/current/theme/alacritty.toml
@@ -124,290 +130,157 @@ local function read_palette()
   return parse_alacritty_toml(alacritty_path()) or {}
 end
 
--- get(palette, "primary", "fallback_key", "#literal") -> first match wins.
--- A literal starting with "#" short-circuits; keys are looked up in the
--- palette; the foreground is the last resort.
-local function get(palette, ...)
-  local keys = { ... }
+-- first(palette, "key", "alias", fallback) -> first present value wins.
+local function first(palette, keys, fallback)
   for _, key in ipairs(keys) do
-    if key:sub(1, 1) == "#" then
-      return key
-    end
     if palette[key] then
       return palette[key]
     end
   end
-  return palette.foreground or "#d4d4d4"
+  return fallback
 end
 
-local function hex_to_rgb(hex)
-  local r, g, b = hex:match("^#(%x%x)(%x%x)(%x%x)")
-  if not r then
-    return 0, 0, 0
-  end
-  return tonumber(r, 16), tonumber(g, 16), tonumber(b, 16)
-end
-
-local function mix(base, overlay, amount)
-  local br, bg, bb = hex_to_rgb(base)
-  local or_, og, ob = hex_to_rgb(overlay)
-  local function channel(a, b)
-    return math.floor(a + (b - a) * amount + 0.5)
-  end
-  return string.format("#%02x%02x%02x", channel(br, or_), channel(bg, og), channel(bb, ob))
-end
-
-local function build_palette(palette)
-  local bg = get(palette, "background", "#1e1e1e")
-  local fg = get(palette, "foreground", "#d4d4d4")
-
-  local red = get(palette, "red", "color1", "#ff5555")
-  local green = get(palette, "green", "color2", "#50fa7b")
-  local yellow = get(palette, "yellow", "color3", "#f1fa8c")
-  local blue = get(palette, "blue", "color4", "accent", "#61afef")
-  local magenta = get(palette, "magenta", "color5", "accent", "#c678dd")
-  local cyan = get(palette, "cyan", "color6", "blue", blue)
+-- Translate the Omarchy palette into the exact colour keys aether expects.
+local function build_colors(p)
+  local bg = first(p, { "background", "bg" }, "#1e1e1e")
+  local fg = first(p, { "foreground", "fg" }, "#d4d4d4")
+  local red = first(p, { "red", "color1" }, "#ff5555")
+  local green = first(p, { "green", "color2" }, "#50fa7b")
+  local yellow = first(p, { "yellow", "color3" }, "#f1fa8c")
+  local blue = first(p, { "blue", "color4" }, "#61afef")
+  local magenta = first(p, { "magenta", "purple", "color5" }, "#c678dd")
+  local cyan = first(p, { "cyan", "color6" }, "#56b6c2")
+  local orange = first(p, { "orange" }, yellow)
+  local brown = first(p, { "brown" }, yellow)
+  local bright_fg = first(p, { "bright_foreground", "light_foreground" }, fg)
 
   return {
-    mode = palette.mode or "dark",
     bg = bg,
-    dark_bg = get(palette, "dark_background", "darker_background", bg),
-    darker_bg = get(palette, "darker_background", "dark_background", bg),
-    lighter_bg = get(palette, "lighter_background", "selection", "dark_background", bg),
+    dark_bg = first(p, { "dark_background", "darker_background" }, bg),
+    darker_bg = first(p, { "darker_background", "dark_background" }, bg),
+    lighter_bg = first(p, { "lighter_background", "selection" }, bg),
+
     fg = fg,
-    bright_fg = get(palette, "bright_foreground", "foreground", "color15", fg),
-    muted = get(palette, "muted", "dark_foreground", "color8", "#9e9e9e"),
-    selection = get(palette, "selection", "lighter_background", "dark_background", bg),
-    accent = get(palette, "accent", "blue", "color4", fg),
+    dark_fg = first(p, { "dark_foreground", "muted" }, fg),
+    light_fg = first(p, { "light_foreground", "bright_foreground" }, fg),
+    bright_fg = bright_fg,
+    muted = first(p, { "muted", "dark_foreground" }, fg),
 
     red = red,
-    bright_red = get(palette, "bright_red", "red", "color9", red),
-    green = green,
-    bright_green = get(palette, "bright_green", "green", "color10", green),
     yellow = yellow,
-    bright_yellow = get(palette, "bright_yellow", "yellow", "color11", yellow),
-    orange = get(palette, "orange", "yellow", "color3", yellow),
-    blue = blue,
-    bright_blue = get(palette, "bright_blue", "blue", "color12", blue),
-    magenta = magenta,
-    bright_magenta = get(palette, "bright_magenta", "magenta", "color13", magenta),
+    orange = orange,
+    green = green,
     cyan = cyan,
-    bright_cyan = get(palette, "bright_cyan", "cyan", "color14", cyan),
-    brown = get(palette, "brown", "orange", yellow),
+    blue = blue,
+    magenta = magenta,
+    purple = magenta,
+    brown = brown,
+
+    bright_red = first(p, { "bright_red" }, red),
+    bright_yellow = first(p, { "bright_yellow" }, yellow),
+    bright_green = first(p, { "bright_green" }, green),
+    bright_cyan = first(p, { "bright_cyan" }, cyan),
+    bright_blue = first(p, { "bright_blue" }, blue),
+    bright_magenta = first(p, { "bright_magenta", "bright_purple" }, magenta),
+    bright_purple = first(p, { "bright_magenta", "bright_purple" }, magenta),
+
+    accent = first(p, { "accent", "blue" }, blue),
+    cursor = bright_fg,
+    selection = first(p, { "selection", "lighter_background" }, bg),
+    selection_foreground = first(p, { "selection_foreground" }, bg),
+    selection_background = first(p, { "selection_background", "selection" }, bg),
+    background = bg,
+    foreground = fg,
   }
 end
 
-local function apply_highlights(c)
-  local hl = function(group, spec)
-    vim.api.nvim_set_hl(0, group, spec)
+-- Groups Omarchy clears to transparent in plugin/after/transparency.lua, so
+-- the terminal background/wallpaper shows through.
+local transparent_groups = {
+  "Normal",
+  "NormalFloat",
+  "FloatBorder",
+  "Pmenu",
+  "Terminal",
+  "EndOfBuffer",
+  "FoldColumn",
+  "Folded",
+  "SignColumn",
+  "LineNr",
+  "CursorLineNr",
+  "NormalNC",
+  "WhichKeyFloat",
+  "TelescopeBorder",
+  "TelescopeNormal",
+  "TelescopePromptBorder",
+  "TelescopePromptTitle",
+  "NeoTreeNormal",
+  "NeoTreeNormalNC",
+  "NeoTreeVertSplit",
+  "NeoTreeWinSeparator",
+  "NeoTreeEndOfBuffer",
+  "NvimTreeNormal",
+  "NvimTreeVertSplit",
+  "NvimTreeEndOfBuffer",
+  "NotifyINFOBody",
+  "NotifyERRORBody",
+  "NotifyWARNBody",
+  "NotifyTRACEBody",
+  "NotifyDEBUGBody",
+  "NotifyINFOTitle",
+  "NotifyERRORTitle",
+  "NotifyWARNTitle",
+  "NotifyTRACETitle",
+  "NotifyDEBUGTitle",
+  "NotifyINFOBorder",
+  "NotifyERRORBorder",
+  "NotifyWARNBorder",
+  "NotifyTRACEBorder",
+  "NotifyDEBUGBorder",
+}
+
+local function make_transparent()
+  for _, name in ipairs(transparent_groups) do
+    local ok, hl = pcall(vim.api.nvim_get_hl, 0, { name = name, link = false })
+    if ok then
+      hl.bg = nil
+      vim.api.nvim_set_hl(0, name, hl)
+    end
   end
-
-  -- Editor chrome (transparent Normal so the Omarchy terminal bg shows through)
-  hl("Normal", { fg = c.fg, bg = "NONE" })
-  hl("NormalFloat", { fg = c.fg, bg = c.lighter_bg })
-  hl("NormalSB", { fg = c.fg, bg = c.dark_bg })
-  hl("FloatBorder", { fg = c.muted, bg = c.lighter_bg })
-  hl("FloatTitle", { fg = c.accent, bg = c.lighter_bg, bold = true })
-  hl("SignColumn", { fg = c.muted, bg = "NONE" })
-  hl("FoldColumn", { fg = c.muted, bg = "NONE" })
-  hl("CursorLine", { bg = c.lighter_bg })
-  hl("CursorLineNr", { fg = c.accent, bold = true })
-  hl("CursorColumn", { bg = c.lighter_bg })
-  hl("LineNr", { fg = c.muted })
-  hl("ColorColumn", { bg = c.dark_bg })
-  hl("Visual", { bg = c.selection })
-  hl("VisualNOS", { bg = c.lighter_bg })
-  hl("MatchParen", { fg = c.accent, bold = true })
-  hl("Search", { fg = c.bg, bg = c.yellow })
-  hl("IncSearch", { fg = c.bg, bg = c.accent })
-  hl("CurSearch", { fg = c.bg, bg = c.accent })
-  hl("Substitute", { fg = c.bg, bg = c.red })
-  hl("Folded", { fg = c.muted, bg = c.dark_bg })
-  hl("FoldColumn", { fg = c.muted, bg = "NONE" })
-  hl("EndOfBuffer", { fg = c.darker_bg })
-  hl("NonText", { fg = c.darker_bg })
-  hl("Whitespace", { fg = c.darker_bg })
-  hl("SpecialKey", { fg = c.muted })
-  hl("Conceal", { fg = c.muted })
-
-  -- Status / tab line
-  hl("StatusLine", { fg = c.fg, bg = c.lighter_bg })
-  hl("StatusLineNC", { fg = c.muted, bg = c.dark_bg })
-  hl("WinSeparator", { fg = c.lighter_bg })
-  hl("VertSplit", { fg = c.lighter_bg })
-  hl("TabLine", { fg = c.muted, bg = c.dark_bg })
-  hl("TabLineFill", { fg = c.muted, bg = c.dark_bg })
-  hl("TabLineSel", { fg = c.fg, bg = c.lighter_bg })
-  hl("Title", { fg = c.accent, bold = true })
-  hl("WinBar", { fg = c.fg, bg = "NONE" })
-  hl("WinBarNC", { fg = c.muted, bg = "NONE" })
-
-  -- Popup menu
-  hl("Pmenu", { fg = c.fg, bg = c.dark_bg })
-  hl("PmenuSel", { fg = c.bg, bg = c.accent })
-  hl("PmenuSbar", { bg = c.darker_bg })
-  hl("PmenuThumb", { bg = c.lighter_bg })
-  hl("PmenuMatch", { fg = c.accent, bg = c.dark_bg })
-  hl("PmenuMatchSel", { fg = c.bg, bg = c.accent })
-  hl("PmenuExtra", { fg = c.muted, bg = c.dark_bg })
-  hl("PmenuExtraSel", { fg = c.bg, bg = c.accent })
-
-  -- Cursor
-  hl("Cursor", { fg = c.bg, bg = c.bright_fg })
-  hl("CursorIM", { fg = c.bg, bg = c.bright_fg })
-  hl("TermCursor", { fg = c.bg, bg = c.bright_fg })
-
-  -- Syntax
-  hl("Comment", { fg = c.muted, italic = true })
-  hl("SpecialComment", { fg = c.muted, italic = true })
-  hl("Todo", { fg = c.bg, bg = c.yellow, bold = true })
-  hl("Debug", { fg = c.red })
-
-  hl("Constant", { fg = c.orange })
-  hl("String", { fg = c.green })
-  hl("Character", { fg = c.green })
-  hl("Number", { fg = c.orange })
-  hl("Boolean", { fg = c.orange })
-  hl("Float", { fg = c.orange })
-  hl("Identifier", { fg = c.fg })
-  hl("Function", { fg = c.blue })
-  hl("Statement", { fg = c.magenta })
-  hl("Conditional", { fg = c.magenta })
-  hl("Repeat", { fg = c.magenta })
-  hl("Label", { fg = c.magenta })
-  hl("Operator", { fg = c.cyan })
-  hl("Keyword", { fg = c.magenta })
-  hl("Exception", { fg = c.magenta })
-  hl("PreProc", { fg = c.magenta })
-  hl("Include", { fg = c.magenta })
-  hl("Define", { fg = c.magenta })
-  hl("Macro", { fg = c.magenta })
-  hl("PreCondit", { fg = c.magenta })
-  hl("Type", { fg = c.cyan })
-  hl("StorageClass", { fg = c.magenta })
-  hl("Structure", { fg = c.cyan })
-  hl("Typedef", { fg = c.cyan })
-  hl("Special", { fg = c.magenta })
-  hl("SpecialChar", { fg = c.cyan })
-  hl("Tag", { fg = c.blue })
-  hl("Delimiter", { fg = c.fg })
-  hl("CommentTitle", { fg = c.accent, bold = true })
-
-  -- Messages
-  hl("Error", { fg = c.red })
-  hl("ErrorMsg", { fg = c.red })
-  hl("WarningMsg", { fg = c.yellow })
-  hl("ModeMsg", { fg = c.accent })
-  hl("MoreMsg", { fg = c.accent })
-  hl("Question", { fg = c.accent })
-  hl("Directory", { fg = c.blue })
-  hl("WildMenu", { fg = c.bg, bg = c.accent })
-
-  -- nvim-notify. Its defaults link NotifyBackground to Normal, which is
-  -- transparent here, so it would warn and fall back to pure black. Derive the
-  -- whole family from the palette so it is rebuilt on every theme change.
-  hl("NotifyBackground", { bg = c.lighter_bg })
-  hl("NotifyERRORBorder", { fg = c.red })
-  hl("NotifyWARNBorder", { fg = c.yellow })
-  hl("NotifyINFOBorder", { fg = c.green })
-  hl("NotifyDEBUGBorder", { fg = c.muted })
-  hl("NotifyTRACEBorder", { fg = c.magenta })
-  hl("NotifyERRORIcon", { fg = c.red })
-  hl("NotifyWARNIcon", { fg = c.yellow })
-  hl("NotifyINFOIcon", { fg = c.green })
-  hl("NotifyDEBUGIcon", { fg = c.muted })
-  hl("NotifyTRACEIcon", { fg = c.magenta })
-  hl("NotifyERRORTitle", { fg = c.red, bold = true })
-  hl("NotifyWARNTitle", { fg = c.yellow, bold = true })
-  hl("NotifyINFOTitle", { fg = c.green, bold = true })
-  hl("NotifyDEBUGTitle", { fg = c.muted, bold = true })
-  hl("NotifyTRACETitle", { fg = c.magenta, bold = true })
-  hl("NotifyERRORBody", { fg = c.fg })
-  hl("NotifyWARNBody", { fg = c.fg })
-  hl("NotifyINFOBody", { fg = c.fg })
-  hl("NotifyDEBUGBody", { fg = c.fg })
-  hl("NotifyTRACEBody", { fg = c.fg })
-  hl("NotifyLogTime", { fg = c.muted, italic = true })
-  hl("NotifyLogTitle", { fg = c.accent, bold = true })
-
-  -- Diagnostics
-  hl("DiagnosticError", { fg = c.red })
-  hl("DiagnosticWarn", { fg = c.yellow })
-  hl("DiagnosticInfo", { fg = c.cyan })
-  hl("DiagnosticHint", { fg = c.muted })
-  hl("DiagnosticUnnecessary", { fg = c.muted })
-  hl("DiagnosticUnderlineError", { sp = c.red, undercurl = true })
-  hl("DiagnosticUnderlineWarn", { sp = c.yellow, undercurl = true })
-  hl("DiagnosticUnderlineInfo", { sp = c.cyan, undercurl = true })
-  hl("DiagnosticUnderlineHint", { sp = c.muted, undercurl = true })
-  hl("DiagnosticVirtualTextError", { fg = c.red, bg = c.dark_bg })
-  hl("DiagnosticVirtualTextWarn", { fg = c.yellow, bg = c.dark_bg })
-  hl("DiagnosticVirtualTextInfo", { fg = c.cyan, bg = c.dark_bg })
-  hl("DiagnosticVirtualTextHint", { fg = c.muted, bg = c.dark_bg })
-  hl("DiagnosticFloatingError", { fg = c.red, bg = c.lighter_bg })
-  hl("DiagnosticFloatingWarn", { fg = c.yellow, bg = c.lighter_bg })
-  hl("DiagnosticFloatingInfo", { fg = c.cyan, bg = c.lighter_bg })
-  hl("DiagnosticFloatingHint", { fg = c.muted, bg = c.lighter_bg })
-
-  -- Spelling
-  hl("SpellBad", { sp = c.red, undercurl = true })
-  hl("SpellCap", { sp = c.blue, undercurl = true })
-  hl("SpellLocal", { sp = c.cyan, undercurl = true })
-  hl("SpellRare", { sp = c.magenta, undercurl = true })
-
-  -- LSP
-  hl("LspReferenceText", { bg = c.lighter_bg })
-  hl("LspReferenceRead", { bg = c.lighter_bg })
-  hl("LspReferenceWrite", { bg = c.lighter_bg })
-  hl("LspSignatureActiveParameter", { fg = c.orange, bold = true })
-
-  -- Diffs / git
-  hl("GitSignsAdd", { fg = c.green })
-  hl("GitSignsChange", { fg = c.yellow })
-  hl("GitSignsDelete", { fg = c.red })
-  hl("DiffAdd", { fg = c.green, bg = mix(c.bg, c.green, 0.15) })
-  hl("DiffChange", { fg = c.yellow, bg = mix(c.bg, c.yellow, 0.15) })
-  hl("DiffDelete", { fg = c.red, bg = mix(c.bg, c.red, 0.15) })
-  hl("DiffText", { fg = c.bright_fg, bg = mix(c.bg, c.blue, 0.25), bold = true })
-  hl("Added", { fg = c.green })
-  hl("Changed", { fg = c.yellow })
-  hl("Removed", { fg = c.red })
-
-  -- Indent guides
-  hl("IblIndent", { fg = c.darker_bg })
-  hl("IblScope", { fg = c.lighter_bg })
-
-  -- Markdown / links
-  hl("LinkText", { fg = c.blue })
-  hl("LinkURL", { fg = c.cyan })
-  hl("MarkdownLinkText", { fg = c.blue })
-  hl("MarkdownLink", { fg = c.cyan })
-  hl("MarkdownHeading", { fg = c.accent, bold = true })
-  hl("MarkdownCode", { fg = c.green })
-  hl("MarkdownCodeBlock", { fg = c.green })
-  hl("MarkdownBlockquote", { fg = c.muted })
-  hl("MarkdownEmph", { fg = c.orange, italic = true })
-  hl("MarkdownStrong", { fg = c.yellow, bold = true })
-  hl("MarkdownListItem", { fg = c.accent })
-  hl("MarkdownListEnumeration", { fg = c.cyan })
-  hl("MarkdownHorizontalRule", { fg = c.muted })
-  hl("MarkdownImage", { fg = c.blue })
-  hl("MarkdownImageText", { fg = c.cyan })
-  hl("MarkdownBoldItalic", { fg = c.orange, bold = true, italic = true })
-
-  -- Tests
-  hl("UnitTestPassed", { fg = c.green })
-  hl("UnitTestFailed", { fg = c.red, bold = true })
 end
 
 local function apply()
-  local c = build_palette(read_palette())
+  local palette = read_palette()
+  local colors = build_colors(palette)
 
-  vim.o.background = c.mode == "light" and "light" or "dark"
-  apply_highlights(c)
+  vim.o.background = palette.mode == "light" and "light" or "dark"
 
-  M.palette = c
-  return c
+  -- Configure aether directly (skipping its own hotreload watcher; we run our
+  -- own) and apply it under the "system" name.
+  require("aether.config").setup({
+    name = "system",
+    transparent = false,
+    terminal_colors = true,
+    styles = {
+      comments = { italic = true },
+      keywords = { italic = true },
+      functions = {},
+      variables = {},
+      sidebars = "dark",
+      floats = "dark",
+    },
+    colors = colors,
+  })
+  require("aether.theme").setup(require("aether.config").extend())
+
+  make_transparent()
+
+  -- Normal is transparent, so nvim-notify's `NotifyBackground -> Normal` link
+  -- resolves to no background. Give the opacity backdrop an explicit colour.
+  vim.api.nvim_set_hl(0, "NotifyBackground", { bg = colors.bg })
+
+  M.palette = colors
+  return colors
 end
 
 local watcher = nil
