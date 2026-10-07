@@ -100,9 +100,11 @@ vi     # → nvim
 ```
 
 The shell also provides **GNU GCC** (`gcc`/`g++` with libstdc++), so GCC-only headers such as
-`<bits/stdc++.h>` work — this is what `clangd` is pointed at via `--query-driver`, so the editor
-resolves the same standard library the compiler uses. Because `nix run` only exposes the wrapped
-Neovim, compile from inside the development shell:
+`<bits/stdc++.h>` work. `clangd` is pointed at that compiler via `--query-driver`, and on first
+entry the shell writes a small clangd config — `CompileFlags: Compiler: g++` — to
+`~/Library/Preferences/clangd/config.yaml` on macOS (or `$XDG_CONFIG_HOME/clangd/config.yaml` on
+Linux) if none exists, so the editor resolves the same standard library the compiler uses.
+Because `nix run` only exposes the wrapped Neovim, compile from inside the development shell:
 
 ```bash
 nix develop github:Ryuzaki5100/nixvim --refresh

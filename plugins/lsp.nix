@@ -10,7 +10,7 @@
         gopls.enable = true;
         clangd = {
           enable = true;
-          cmd = [ "clangd" "--query-driver=${pkgs.gcc}/bin/g++" ];
+          cmd = [ "clangd" "--query-driver=${pkgs.gcc}/bin/*" ];
         };
         jdtls.enable = true;
         marksman.enable = true; # Markdown
