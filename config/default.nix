@@ -9,6 +9,7 @@
   imports = [
     ./../plugins
     ./bufferline.nix
+    ./clangd.nix
     ./options.nix
     ./keymaps.nix
     ./custom-key-bindings.nix

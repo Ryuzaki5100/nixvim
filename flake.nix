@@ -123,20 +123,9 @@
               alias vim=nvim
               alias vi=nvim
 
-              # Give clangd a compile command that names our GNU g++ (see
-              # plugins/lsp.nix). Without compile_commands.json clangd otherwise
-              # falls back to its own clang + the SDK's libc++, which has no
-              # <bits/stdc++.h>.
-              case "$(uname -s)" in
-                Darwin) clangd_cfg_dir="$HOME/Library/Preferences/clangd" ;;
-                *)      clangd_cfg_dir="''${XDG_CONFIG_HOME:-$HOME/.config}/clangd" ;;
-              esac
-              mkdir -p "$clangd_cfg_dir"
-              if [ ! -e "$clangd_cfg_dir/config.yaml" ]; then
-                printf 'CompileFlags:\n  Compiler: g++\n' > "$clangd_cfg_dir/config.yaml"
-                echo "clangd: configured to use the devShell g++"
-              fi
-
+              # clangd is pointed at our GNU g++ via plugins/lsp.nix
+              # (--query-driver) and config/clangd.nix (CompileFlags.Compiler),
+              # so <bits/stdc++.h> resolves in the editor for any launch method.
               export CC="arm-none-eabi-gcc"
               export CXX="arm-none-eabi-g++"
               export AR="arm-none-eabi-ar"
