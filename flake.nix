@@ -36,7 +36,7 @@
           # All the tools you want available inside Neovim (LSPs, compilers, debuggers…)
           lspTools = with pkgs; [
             # C / C++
-            llvmPackages_18.clang-tools
+            clang-tools
             clang
             gnumake
             cmake

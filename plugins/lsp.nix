@@ -11,7 +11,7 @@
         clangd = {
           enable = true;
           extraOptions.fallbackFlags = [
-            "-I${pkgs.llvmPackages_18.libclang.lib}/lib/clang/18/include"
+            "-I${pkgs.llvmPackages.libclang.lib}/lib/clang/${pkgs.lib.versions.major pkgs.llvmPackages.libclang.version}/include"
             "-I${pkgs.gcc.cc.lib}/include/c++/${pkgs.gcc.cc.version}"
             "-I${pkgs.gcc.cc.lib}/include/c++/${pkgs.gcc.cc.version}/x86_64-unknown-linux-gnu"
           ];
