@@ -10,11 +10,7 @@
         gopls.enable = true;
         clangd = {
           enable = true;
-          extraOptions.fallbackFlags = [
-            "-I${pkgs.llvmPackages.libclang.lib}/lib/clang/${pkgs.lib.versions.major pkgs.llvmPackages.libclang.version}/include"
-            "-I${pkgs.gcc.cc.lib}/include/c++/${pkgs.gcc.cc.version}"
-            "-I${pkgs.gcc.cc.lib}/include/c++/${pkgs.gcc.cc.version}/x86_64-unknown-linux-gnu"
-          ];
+          cmd = [ "clangd" "--query-driver=${pkgs.gcc}/bin/g++" ];
         };
         jdtls.enable = true;
         marksman.enable = true; # Markdown

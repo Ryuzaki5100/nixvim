@@ -99,6 +99,17 @@ vim    # → nvim
 vi     # → nvim
 ```
 
+The shell also provides **GNU GCC** (`gcc`/`g++` with libstdc++), so GCC-only headers such as
+`<bits/stdc++.h>` work — this is what `clangd` is pointed at via `--query-driver`, so the editor
+resolves the same standard library the compiler uses. Because `nix run` only exposes the wrapped
+Neovim, compile from inside the development shell:
+
+```bash
+nix develop github:Ryuzaki5100/nixvim --refresh
+nvim                       # or vim/vi
+g++ hello-world.cpp -o a   # GNU GCC, <bits/stdc++.h> works
+```
+
 ---
 
 ## Project Structure

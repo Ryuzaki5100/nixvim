@@ -38,6 +38,7 @@
             # C / C++
             clang-tools
             clang
+            gcc
             gnumake
             cmake
             gdb
