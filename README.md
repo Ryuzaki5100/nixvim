@@ -60,15 +60,16 @@ nix run github:Ryuzaki5100/nixvim
 
 ayu, bamboo, base16, catppuccin, cyberdream, dracula, everforest, github-theme, gruvbox, kanagawa, melange, modus, monokai-pro, moonfly, nightfox, nord, onedark, oxocarbon, palette, poimandres, rose-pine, solarized-osaka, tokyonight, vague, vscode, and more.
 
-Two custom colorschemes are bundled as an `extraPlugin` and can be activated with `:colorscheme <name>`:
+Three custom colorschemes are bundled as an `extraPlugin` and can be activated with `:colorscheme <name>`:
 
+- `ghostty` — **mirrors the Ghostty terminal** when Neovim runs inside it. It reads the live background, foreground and 16-colour ANSI palette from `ghostty +show-config` (falling back to the on-disk config/theme files) and drives **[aether.nvim](https://github.com/bjarneo/aether.nvim)**, so syntax, treesitter, LSP, and plugin highlights use the terminal's own colours. The background is left transparent, so the editor inherits Ghostty's exact `background-opacity`/`background-blur`. A background watcher re-applies everything whenever the theme or config changes, so `ghostty-set-theme` (or a transparency tweak) is reflected in a running Neovim with no restart.
 - `system` — **follows the active Omarchy desktop theme**. At startup it reads the live palette from `~/.local/state/omarchy/current/theme/` (the Aether `colors.toml`, or `alacritty.toml` for older themes) and drives **[aether.nvim](https://github.com/bjarneo/aether.nvim)** — the same engine Omarchy generates its own Neovim theme from — so syntax, treesitter, LSP, and plugin highlights (neo-tree, noice, gitsigns, indent-blankline, telescope, which-key, …) all match the desktop. A background watcher re-applies it automatically when you run `omarchy theme set`, so a running Neovim changes with the desktop — no restart and no per-theme configuration. Falls back to a neutral dark palette off-Omarchy.
 - `retro-orange` — amber/orange monochrome matching the Omarchy `retropc` theme (`:colorscheme retro-orange`).
 
-The default theme is selected at build time by the flake package you run:
+The default theme is resolved at runtime: inside Ghostty the `ghostty` colorscheme wins automatically, everywhere else the build-time theme below applies. Set `NVIM_GHOSTTY_MATCH=0` to keep the build-time theme even inside Ghostty.
 
 ```bash
-nix run .          # retro-orange (default)
+nix run .          # retro-orange (default; becomes ghostty inside a Ghostty terminal)
 nix run .#omarchy  # system — follows the active Omarchy desktop theme
 ```
 

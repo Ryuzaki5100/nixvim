@@ -6,11 +6,22 @@
   ...
 }:
 {
-  # Force the default colorscheme so it wins over modules that set the option themselves.
-  # The theme is chosen at build time via the flake package (see flake.nix):
+  # Force the default colorscheme so it wins over the many colorscheme modules
+  # below (each of which otherwise defines `colorscheme`). The theme is chosen
+  # at build time via the flake package (see flake.nix):
   #   nix run .          -> retro-orange (default)
   #   nix run .#omarchy  -> system (follows the Omarchy desktop theme)
   colorscheme = lib.mkForce theme;
+
+  # Then, once the static default above has been applied, re-resolve it at
+  # runtime so it can track the terminal:
+  #   * inside Ghostty -> the "ghostty" colorscheme mirrors the terminal's
+  #     palette and inherits its transparency (see system-colorscheme/);
+  #   * anywhere else  -> the build-time `theme` stays.
+  # Set NVIM_GHOSTTY_MATCH=0 to keep the build-time theme in Ghostty.
+  extraConfigLua = ''
+    require("ghostty_theme").setup_default("${theme}")
+  '';
 
   extraPlugins = [
     (pkgs.vimUtils.buildVimPlugin {
